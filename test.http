@@ -1,0 +1,17 @@
+POST http://localhost:8080/event
+Content-Type: application/json
+
+{
+  "id": "12345",
+  "someIntVal": 42,
+  "someFloatVal": 3.14
+}
+###
+POST http://localhost:8080/event
+Content-Type: application/json
+
+{
+  "id": "67890",
+  "someIntVal": 21,
+  "someFloatVal": 5.67
+}
