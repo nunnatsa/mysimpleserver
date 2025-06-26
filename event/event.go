@@ -2,6 +2,7 @@ package event
 
 import (
 	"fmt"
+	"sync"
 )
 
 type Event struct {
@@ -11,7 +12,7 @@ type Event struct {
 }
 
 func HandleEvent(e Event) bool {
-	if !wasAlreadyHandled(e) {
+	if wasAlreadyHandled(e) {
 		return false
 	}
 
@@ -21,16 +22,20 @@ func HandleEvent(e Event) bool {
 }
 
 var m = make(map[string]bool)
+var mutex = &sync.Mutex{}
 
 func wasAlreadyHandled(e Event) bool {
+	mutex.Lock()
+	defer mutex.Unlock()
+
 	_, exists := m[e.Id]
 	if exists {
-		return false
+		return true
 	}
 
 	m[e.Id] = true
 
-	return true
+	return false
 }
 
 func handleOneEvent(e Event) {
