@@ -11,7 +11,7 @@ type Event struct {
 }
 
 func HandleEvent(e Event) bool {
-	if !f(e) {
+	if wasAlreadyHandled(e) {
 		return false
 	}
 
@@ -20,18 +20,17 @@ func HandleEvent(e Event) bool {
 	return true
 }
 
-var x []string
+var m = make(map[string]bool)
 
-func f(e Event) bool {
-	for i := 0; i < len(x); i++ {
-		if x[i] == e.Id {
-			return false
-		}
+func wasAlreadyHandled(e Event) bool {
+	_, exists := m[e.Id]
+	if exists {
+		return true
 	}
 
-	x = append(x, e.Id) // Add the event ID
+	m[e.Id] = true
 
-	return true
+	return false
 }
 
 func handleOneEvent(e Event) {
